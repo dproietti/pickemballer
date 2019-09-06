@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<form method="POST" action="/pool">
+      {{ form.hidden_tag() }}
+  <dl>
+    {{ render_field(form.poolname) }}
+    <table>
+    {% for subfield in form.pooltype %}
+        <tr>
+            <td>{{ subfield }}</td>
+            <td>{{ subfield.label }}</td>
+        </tr>
+    {% endfor %}            
+    </table>
+
+  </dl>
+  <p><input type="submit" value="Pool">
+</form>
+
+{% endblock %}

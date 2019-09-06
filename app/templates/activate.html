@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% from "_formhelpers.html" import render_field %}
+
+<h1>Activate Your Account for Email: {{email}}</h1>
+<form method="POST" action="/activate/{{setpwdkey}}">
+  <dl>
+    {{ render_field(form.firstname) }}
+    {{ render_field(form.lastname) }}
+    {{ render_field(form.password) }}
+  </dl>
+  <p><input type="submit" value="activate">
+</form>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            login
+        </div>
+        
+        <div class="panel-body">
+            
+            <form role="form" action="login" method="post">
+            {{ loginForm.hidden_tag() }}
+        
+            <div class="form-group">
+                <label for="login-email">Email:</label>
+                <input type="email" class="form-control" name="email" id="login-email" placeholder="Enter email">
+            </div>
+            
+            <div class="form-group">
+                <label for="login-pwd">Password:</label>
+                <input type="password" class="form-control" name="password" id="login-pwd" placeholder="Enter password">
+            </div>
+            
+            <button type="submit" class="btn btn-default">Submit</button>
+            
+            </form>
+            
+        </div>
+        
+    </div>
+    
+    <div class="panel panel-default">
+        
+        <div class="panel-heading">
+            Signup
+        </div>
+        
+        <div class="panel-body">
+        
+            <form role=form action="register" method="post">
+        
+            {{ registrationForm.hidden_tag() }}
+        
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input type="text" class="form-control" id="firstname" name="firstname" type="text" value="">
+            </div>
+        
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" type="text" value="">
+            </div>
+        
+            <div class="form-group">
+                <label for="signup-email">Email:</label>
+                <input type="email" class="form-control" name="email" id="signup-email" placeholder="Enter email">
+            </div>
+        
+            <div class="form-group">
+                <label for="signup-pwd">Password:</label>
+                <input type="password" class="form-control" name="password" id="signup-pwd" placeholder="Enter password">
+            </div>
+        
+            <button type="submit" class="btn btn-default">Submit</button>
+        
+        </div>
+        
+    </div>
+    <a href="password-reset">Forgot your password?</a>
+{% endblock %}

@@ -1,0 +1,3 @@
+#!/bin/bash
+ rm fbpool_*.zip
+zip -r fbpool_`date +"%Y%m%d%H%M"`.zip * -x "ex50/*"

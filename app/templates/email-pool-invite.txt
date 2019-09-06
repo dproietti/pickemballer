@@ -1,0 +1,9 @@
+Hello {{player_name}},
+
+{{commissioner_name}} has invited you to join pick'em pool {{pool_name}}.
+
+Join Pool: http://www.pickemballer.com/login
+
+{% if password %}
+Your password is {{password}}
+{% endif %}

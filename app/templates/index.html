@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>season leader board</h2>
+<table class = "table table-bordered">
+  <thead>
+    <tr>
+      <th>Player</th>
+      <th>Wins</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for seasonStanding in seasonStandings -%}
+        <tr>
+          <td>{{seasonStanding['player']}}</td>
+          <td>{{seasonStanding['wins']}}</td>
+        </tr>
+      {%- endfor %}
+  </tbody>
+</table>
+
+<h2>week {{current_week}} results</h2>
+{% if pics %}
+<table class = "table table-bordered">
+  <thead>
+    <tr>
+      <th>Player</th>
+      <th colspan="{{number_of_games}}">Games</th>
+      <th>O/U</th>
+      <th>Wins</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pic in pics -%}
+    <tr{% if pic['winner'] %} class="week_winner"{% endif %}>
+      <td{% if pic['winner'] %} class="winner"{% endif %}>{{pic['player']}}</td>
+      {% for game in pic['games'] -%}
+      <td{% if game['win'] %} class="winner"{% endif %}>{{game['team']}}</td>
+      {%- endfor %}
+      <td{% if pic['over_under_winner'] %} class="winner"{% endif %}>{{pic['over_under']}}</td>
+      <td{% if pic['winner'] %} class="winner"{% endif %}>{{pic['wins']}}</td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+{% else %}
+  <h1>No picks made for this week</h1>
+{% endif %}
+
+{% endblock %}

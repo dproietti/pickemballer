@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+    {%if picsLocked %}
+        <h2>Picks Locked for this week!</h2>
+    {% endif %}
+
+    <form class="form-horizontal" role="form" action="/pics" method="post">
+    {{ form.hidden_tag() }}
+    {% for pic in pics -%}
+    <div class="form-group">
+        <label class="radio-inline">
+            <input type="radio" name="{{pic['game_id']}}" value="A"{% if pic['away_pick'] %} checked="checked"{% endif %}{%if pic['locked'] %} disabled readonly{% endif %} />
+            <img src="http://prod.static.bills.clubs.nfl.com/nfl-assets/img/gbl-ico-team/{{pic['away_team'].id}}/helmets/away/medium.png" class="img-rounded" ><br>
+            <span>{{pic['away_team'].name}}<br>
+            Spread: {% if pic['away_line'] == 0 %}PK{% else %}{% if pic['away_line'] %}{{pic['away_line']}}{% else %}TBD{% endif %}{% endif %}<br>
+            Record: ({{pic['away_team'].wins}}-{{pic['away_team'].losses}}-{{pic['away_team'].ties}})</span>
+        </label>
+        @
+        <label class="radio-inline">
+            <input type="radio" name="{{pic['game_id']}}" value="H"{% if pic['home_pick'] %} checked="checked"{% endif %}{%if pic['locked'] %} disabled readonly{% endif %} />
+            <img src="http://prod.static.bills.clubs.nfl.com/nfl-assets/img/gbl-ico-team/{{pic['home_team'].id}}/helmets/home/medium.png" class="img-rounded" ><br>
+            <span>{{pic['home_team'].name}}<br>
+            Spread: {% if pic['home_line'] == 0 %}PK{% else %}{% if pic['home_line'] %}{{pic['home_line']}}{% else %}TBD{% endif %}{% endif %}<br>
+            Record: ({{pic['home_team'].wins}}-{{pic['home_team'].losses}}-{{pic['home_team'].ties}})</span>
+        </label>
+
+    </div>
+    {%- endfor %}
+    <div class="form-group">
+        <h5>Tie Breaker</h5>
+        <label for="tieBreaker">{{overUnderTeamAway}} @ {{overUnderTeamHome}}{% if overUnder %}({{overUnder}}){% endif %}:</label>
+            <input type="text" name="tieBreaker" id="tieBreaker" value="{{tieBreaker}}" {%if tieBreakerLocked %} disabled readonly{% endif %} />
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="showPicks"{% if showPicks %} checked=""{% endif %} {%if tieBreakerLocked %} disabled readonly{% endif %}/> Show Picks
+        </label>
+    </div>
+    <div class="form-group">
+        {%if tieBreakerLocked == False %}
+            <button type="submit" class="btn btn-default">Submit</button>  
+        {% endif %}
+    </div>
+    </form>
+{% endblock %}

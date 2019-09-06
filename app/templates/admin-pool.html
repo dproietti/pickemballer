@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+
+  Pool: <select name="admin_pool_selector" onchange="javascript:location.href='{{request.path}}?pool=' + this.value;">
+  {% for pool in admin_pools -%}
+    <option value="{{pool['id']}}"{% if pool['id'] == current_admin_pool['id'] %} selected="selected" {% endif %}>{{pool['name']}}</option>
+  {%- endfor %}
+  </select><br>
+  
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Pool</h3>
+  </div>
+  <div class="panel-body">
+    Name: {{current_admin_pool['name']}}<br>
+    Type: {{current_admin_pool['type']}}<br>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Invite Player to Join Pool</h3>
+  </div>
+  <div class="panel-body">
+    <form class="form-inline" action="/admin-pool-add-player" method="post">
+      {{ form.hidden_tag() }}
+      <input type="hidden" name="pool_id" value={{form.poolId.data}}>
+      <div class="form-group">
+        <label for="exampleInputName2">Name</label>
+        <input type="text" class="form-control" name="nickName" id="exampleInputName2" placeholder="Jane Doe">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail2">Email</label>
+        <input type="email" class="form-control" name="email" id="exampleInputEmail2" placeholder="jane.doe@example.com">
+      </div>
+        <button type="submit" class="btn btn-default">Send invitation</button>
+    </form>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Players</h3>
+  </div>
+  <div class="panel-body">
+
+    <table class = "table table-bordered">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player in players -%}
+        <tr>
+          <td>{{player['name']}}</td>
+          <td>{{player['email']}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+{% endblock %}

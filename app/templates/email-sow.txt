@@ -1,0 +1,7 @@
+Enter your pic's for week {{week}}.
+
+Link: http://www.pickemballer.com/pics?week={{week}}
+
+{% for game in games -%}
+    {{game['home_team'].name}}({{game['home_line']}}) @ {{game['away_team'].name}}
+{% endfor %}
