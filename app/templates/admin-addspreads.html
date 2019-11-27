@@ -17,12 +17,12 @@
         <tr>
           <td>{{game.away_team}}{%if game.away_line -%} ({{game.away_line}}){% endif %}</td>
           <td>{{game.home_team}}{%if game.home_line -%} ({{game.home_line}}){% endif %}</td>
-          
+
             <form class="form-horizontal" role="form" action="/admin-addspreads" method="post">
               {{ form.hidden_tag() }}
               <input type="hidden" name="gameId" value="{{game.id}}">
               <input type="hidden" name="home_team" value="{{game.home_team}}">
-          <td><input type="text" name="homeLine" value="{{game.home_line}}"{%if game.gameStarted() -%} disabled{% endif %}></td>
+          <td><input type="text" name="homeLine" {%if game.home_line -%}value="{{game.home_line}}"{% endif %}{%if game.gameStarted() -%} disabled{% endif %}></td>
           <td><input type="text" name="overUnder" {%if game.over_under -%}value="{{game.over_under}}"{% endif %}{%if game.gameStarted() -%} disabled{% endif %}></td>
           <td><button type="submit" class="btn btn-default"{%if game.gameStarted() -%} disabled{% endif %}>Submit</button></td>
             </form
