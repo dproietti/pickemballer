@@ -1,11 +1,11 @@
 import os
 from flask import Flask
-from flask.ext.bcrypt import Bcrypt
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager, UserMixin
+from flask_bcrypt import Bcrypt
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin
 from config import basedir
-from flask.ext.mail import Mail
-from flask_wtf.csrf import CsrfProtect
+from flask_mail import Mail
+from flask_wtf import CsrfProtect
 
 
 app = Flask(__name__)

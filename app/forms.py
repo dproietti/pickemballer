@@ -1,5 +1,5 @@
 from .models import Player, Pool, PoolPlayer, Team, Schedule, Pics
-from flask.ext.wtf import Form
+from flask_wtf import Form
 from wtforms import StringField, BooleanField, TextField, PasswordField, RadioField, HiddenField, IntegerField, FloatField, validators
 from wtforms.validators import DataRequired
 
