@@ -10,19 +10,6 @@ from .forms import LoginForm, RegistrationForm, PoolForm, ActivateUserForm, pics
 from .models import Player, Pool, PoolPlayer, Team, Schedule, Pics
 from .emails import send_email
 
-
-#def weekLocked(week):
-#    #2016 weeks = [u'2016-09-08 20:30:00', u'2016-09-15 20:25:00', u'2016-09-22 20:25:00', u'2016-09-29 20:25:00', u'2016-10-06 20:25:00', u'2016-10-13 20:25:00', u'2016-10-20 20:25:00', u'2016-10-27 20:25:00', u'2016-11-03 20:25:00', u'2016-11-10 20:25:00', u'2016-11-17 20:25:00', u'2016-11-24 12:30:00', u'2016-12-01 20:25:00', u'2016-12-08 20:25:00', u'2016-12-15 20:25:00', u'2016-12-22 20:25:00', u'2017-01-01 13:00:00']
-#    weeks = [u'2017-09-07 20:30:00', u'2017-09-14 20:25:00', u'2017-09-21 20:25:00', u'2017-09-28 20:25:00', u'2017-10-05 20:25:00', u'2017-10-12 20:25:00', u'2017-10-19 20:25:00', u'2017-10-26 20:25:00', u'2017-11-02 20:25:00', u'2017-11-09 20:25:00', u'2017-11-16 20:25:00', u'2017-11-23 00:30:00', u'2017-11-30 20:25:00', u'2017-12-07 20:25:00', u'2017-12-14 20:25:00', u'2017-12-23 16:30:00', u'2017-12-31 13:00:00']
-#    gameTime = datetime.datetime.strptime( weeks[week-1], "%Y-%m-%d %X" )
-#    EST=timezone('US/Eastern')
-#    gameTimeEST = datetime.datetime(year=gameTime.year, month=gameTime.month, day=gameTime.day, hour=gameTime.hour, minute=gameTime.minute, second=gameTime.second, microsecond=111111, tzinfo=EST)
-#    dtNow = datetime.datetime.now(EST)
-#    nowTimeEST = datetime.datetime(year=dtNow.year, month=dtNow.month, day=dtNow.day, hour=dtNow.hour, minute=dtNow.minute, second=dtNow.second, microsecond=111111, tzinfo=EST)
-#    if gameTimeEST > nowTimeEST:
-#        return False
-#    else:
-#        return True
     
 def getUserName():
     if current_user.is_authenticated:
@@ -41,7 +28,6 @@ def getCurrentWeek():
             cWeek = dt.isocalendar()[1] - 35
         else:
             cWeek = dt.isocalendar()[1] - 36
-        print "Current Week: %s" % cWeek
         if cWeek < 1:
             return 1
         elif cWeek > 17:
@@ -96,7 +82,6 @@ def getCurrentAdminPool():
         return {'name' : pool.name , 'id' : str(pool.id), 'type': pool.type}
     else:
         pools = getCommissionerPools()
-        print pools
         if pools:
             pool = pools[0]
             session['current_admin_pool_id'] = pool['id']
@@ -142,7 +127,6 @@ def index():
     for game in Schedule.query.filter(Schedule.week==getCurrentWeek()).order_by(Schedule.week_game_id):
         weekGames.append([game.home_team, game.away_team, game.atsWinner(), game.gameStarted()])
         
-    print "Current Pool ID: %s" % getCurrentPool()
     for player, pic in db.session.query(Player, Pics).join(Pics).filter_by(pool_id=getCurrentPool(), week=getCurrentWeek()).order_by(Pics.wins.desc(),Pics.winner.desc()).all():
         games = []
         gameCounter = 0
@@ -172,8 +156,6 @@ def index():
         
         dspPics.append({'player' : player.name(), 'games' : games, 'over_under' : tieBreaker, 'over_under_winner' : pic.winnerTieBreaker, 'wins' : pic.wins, 'winner' : pic.winner})
 
-    print getSeasonStandings()
-    print dspPics
     return render_template("index.html",
                        username=getUserName(),
                        pools = getPools(),
@@ -200,9 +182,6 @@ def pics():
         if 'pool' in request.args:
             session['current_pool'] = request.args.get('pool')
     
-    #if request.method == 'POST' and weekLocked(getCurrentWeek()):
-    #    return redirect(url_for('do_error', messages="week locked, can't save!"))
-        
     pics = None
     if request.method == 'GET':
         pics = Pics.query.filter_by(pool_id=getCurrentPool(), player_id=current_user.id, week=getCurrentWeek()).first()
@@ -223,7 +202,6 @@ def pics():
     display_pics = []
     teams = getTeams()
     for game in Schedule.query.filter(Schedule.week==getCurrentWeek()).order_by(Schedule.week_game_id):
-        #gameCounter += 1
         display_pic = {}
         display_pic['game_id'] = game.week_game_id
         display_pic['away_team'] = teams[game.away_team]
@@ -329,7 +307,6 @@ def login():
             flash('Invalid Login', 'danger')
             return render_template("login.html", loginForm=LoginForm())
     else:
-        #print form.errors
         return render_template("login.html", loginForm=LoginForm())
 
 ###############################################################################
@@ -395,7 +372,6 @@ def activate(setpwdkey):
             login_user(player)
             return redirect(url_for('index'))        
         else:
-            print form.errors
             return render_template('activate.html', form=form, setpwdkey=setpwdkey, email=player.email)
             
 ###############################################################################
@@ -584,7 +560,6 @@ def adminPoolAddPlayer():
     
     form = PoolAddPlayer(request.form)
     if form.validate() is False:
-        print 'xxxxx-2'
         return redirect(url_for('do_error', messages="player does not exists")) 
     
     current_admin_pool = getCurrentAdminPool()
@@ -601,7 +576,6 @@ def adminPoolAddPlayer():
 
         poolPlayer = PoolPlayer(pool_id=session['current_admin_pool_id'], nickName = form.nickName.data, player_id=player.id)
         if poolPlayer.id is not None:
-            print 'Playe with email=%s alread exists in pool' % player.email
             flash('Playe with email=%s alread exists in pool' % player.email)
         else:
             db.session.add(poolPlayer)
